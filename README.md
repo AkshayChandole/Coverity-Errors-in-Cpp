@@ -644,17 +644,146 @@ int main() {
 
 ## Resource Management Errors
 
+Resource management errors occur when resources such as memory, file handles, or other system resources are not properly managed. These errors can lead to resource leaks, uninitialized variables, or inefficient use of resources. This section covers common types of resource management errors and provides examples and solutions.
+<br>
+
 ### UNINIT
 
-_Explanation and example of UNINIT error._
+**Description:** An `UNINIT` error occurs when a variable is used before it has been initialized. This can lead to unpredictable behavior or crashes, as the variable may contain garbage values.
 
-### RESOURCE_LEAK
+**Example:**
 
-_Explanation and example of RESOURCE_LEAK error._
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int value; // Variable is declared but not initialized
+    
+    // UNINIT: Using the uninitialized variable
+    std::cout << "Value: " << value << std::endl; // This will print a garbage value
+}
+```
+
+**Explanation:**
+-   `int value;` declares a variable without initializing it.
+-   Using `value` before initializing it can lead to undefined behavior or unexpected results.
+
+**Fix:** Always initialize variables before use.
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int value = 0; // Variable is initialized
+    
+    std::cout << "Value: " << value << std::endl; // This will print the initialized value
+}
+```
+
+**Explanation:**
+
+-   `int value = 0;` initializes the variable, ensuring that it has a defined value before use.
+<br>
+
+### [RESOURCE_LEAK](#resource_leak-1)
+
+**Description:** A `RESOURCE_LEAK` error occurs when a resource such as memory, file handles, or network sockets is allocated but not properly released. This can lead to resource exhaustion and performance issues.
+
+**Example:**
+
+```cpp
+#include <iostream>
+#include <fstream>
+
+void exampleFunction() {
+    std::ifstream file("example.txt");
+    
+    // RESOURCE_LEAK: File is opened but not closed
+    if (!file.is_open()) {
+        std::cerr << "Error opening file" << std::endl;
+        return;
+    }
+    
+    // Use the file...
+    // Forgetting to close the file causes a resource leak
+}
+```
+
+**Explanation:**
+
+-   `std::ifstream file("example.txt");` opens a file, but it is not explicitly closed, leading to a resource leak.
+
+**Fix:** Ensure that resources are properly released after use.
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+#include <fstream>
+
+void exampleFunction() {
+    std::ifstream file("example.txt");
+    
+    if (!file.is_open()) {
+        std::cerr << "Error opening file" << std::endl;
+        return;
+    }
+    
+    // Use the file...
+    
+    file.close(); // Properly close the file to prevent resource leak
+}
+```
+
+**Explanation:**    `file.close();` ensures that the file is properly closed, releasing the resource.
+<br>
 
 ### UNUSED_VALUE
 
-_Explanation and example of UNUSED_VALUE error._
+**Description:** An `UNUSED_VALUE` error occurs when a variable is assigned a value that is never used. This can lead to inefficient code and potential logical errors.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int value = 10; // Value is assigned but never used
+    
+    // UNUSED_VALUE: The value assigned to `value` is not used
+    value = 20; // The previous value is overwritten without being used
+}
+```
+
+**Explanation:**
+
+-   `int value = 10;` assigns a value to `value`, but the value is not used before it is overwritten.
+-   This leads to an `UNUSED_VALUE` error, indicating inefficiency and potential logical issues.
+
+**Fix:** Use the value before overwriting it or eliminate unnecessary assignments.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int value = 10; // Value is assigned
+    
+    std::cout << "Initial value: " << value << std::endl; // Use the value
+    
+    value = 20; // The value is now updated and can be used again
+    std::cout << "Updated value: " << value << std::endl;
+}
+```
+
+**Explanation:**
+
+-   The value assigned to `value` is now used before being overwritten, ensuring that assignments are meaningful and efficient.
+<br>
+
+
+---
 
 ## Control Flow Errors
 
