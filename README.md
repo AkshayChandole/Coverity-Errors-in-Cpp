@@ -88,8 +88,9 @@ Coverity performs various types of analyses, including:
 -   **Concurrency Analysis**: Finding issues related to multi-threaded applications, such as data races and deadlocks.
 
 Coverity helps in maintaining a robust and secure codebase by integrating seamlessly into the development workflow and providing actionable insights into potential problems.
+<br>
 
-### Purpose of This Repository](#purpose-of-this-repository)
+### [Purpose of This Repository](#purpose-of-this-repository)
 
 The purpose of this repository is to demonstrate common Coverity errors detected in C++ code and provide examples of each error type. This repository aims to:
 
@@ -102,11 +103,12 @@ By exploring the examples and explanations provided in this repository, develope
 ---
 
 
-## Memory Errors
+## [Memory Errors](#memory-errors)
 
 Memory errors are among the most critical issues in C++ programming, often leading to crashes, undefined behavior, or security vulnerabilities. Coverity detects various types of memory-related issues to help developers identify and fix these problems. Below are detailed explanations and examples for common memory errors:
+<br>
 
-### USE_AFTER_FREE
+### [USE_AFTER_FREE](#use_after_free)
 
 **Description:** The `USE_AFTER_FREE` error occurs when a program accesses memory after it has been freed. This can lead to unpredictable behavior, crashes, or security vulnerabilities, as the memory may have been reallocated and modified elsewhere.
 
@@ -139,7 +141,7 @@ void exampleFunction() {
 ```
 <br>
 
-### DOUBLE_FREE
+### [DOUBLE_FREE](#double_free)
 
 **Description:** The `DOUBLE_FREE` error occurs when memory is freed more than once. This can lead to program crashes or memory corruption, as the memory allocator may not handle multiple frees gracefully.
 
@@ -177,7 +179,7 @@ void exampleFunction() {
 ```
 <br>
 
-### RESOURCE_LEAK
+### [RESOURCE_LEAK](#resource_leak)
 
 **Description:** The `RESOURCE_LEAK` error occurs when a program fails to release resources such as memory, file handles, or sockets. This leads to resource exhaustion and can degrade performance or stability over time.
 
@@ -225,7 +227,7 @@ void exampleFunction() {
 ```
 <br>
 
-### OVERRUN
+### [OVERRUN](#overrun)
 
 **Description:** The `OVERRUN` error, also known as a buffer overflow, occurs when a program writes data beyond the bounds of allocated memory. This can overwrite adjacent memory and lead to crashes or security vulnerabilities.
 
@@ -258,7 +260,7 @@ void exampleFunction() {
 ```
 <br>
 
-### MEMORY_LEAK
+### [MEMORY_LEAK](#memory_leak)
 
 **Description:** The `MEMORY_LEAK` error occurs when a program allocates memory but fails to release it. Over time, this leads to increased memory usage and potential crashes due to resource exhaustion.
 
@@ -289,7 +291,7 @@ void exampleFunction() {
 ```
 <br>
 
-### COPY_PASTE_ERROR
+### [COPY_PASTE_ERROR](#copy_paste_error)
 
 **Description:** The `COPY_PASTE_ERROR` occurs when code is copied and pasted without proper adjustments, leading to errors or unintended behavior. This often results in resource management issues or incorrect logic.
 
@@ -310,14 +312,15 @@ void exampleFunction() {
 
 **Fix:** Avoid copy-pasting code. Instead, refactor common functionality into reusable functions or classes and ensure proper resource management.
 
+<br>
 ---
 
-## Null Pointer Errors
+## [Null Pointer Errors](#null-pointer-errors)
 
 Null pointer errors occur when a program attempts to use a pointer that has not been initialized, has been set to `nullptr`, or has been invalidated. These errors can lead to undefined behavior, crashes, and security vulnerabilities. This section covers common types of null pointer errors and provides examples and solutions.
 <br>
 
-### NULL_POINTER
+### [NULL_POINTER](#null_pointer)
 
 **Description:** A `NULL_POINTER` error occurs when a program dereferences a pointer that is `nullptr` or has not been initialized. This often leads to runtime crashes or undefined behavior.
 
@@ -363,7 +366,7 @@ void exampleFunction() {
 -   The pointer `ptr` is checked to ensure it is not `nullptr` before dereferencing.
 <br>
 
-### NULL_RETURNS
+### [NULL_RETURNS](#null_returns)
 
 **Description:** A `NULL_RETURNS` error occurs when a function returns a `nullptr` or a null pointer, but the caller does not check for this condition. This can lead to unexpected crashes or logical errors in the program.
 
@@ -425,7 +428,7 @@ void exampleFunction() {
 <br>
 
 
-### FORWARD_NULL
+### [FORWARD_NULL](#forward_null)
 
 **Description:** A `FORWARD_NULL` error occurs when a `nullptr` is passed as an argument to a function that does not handle null pointers correctly. This can lead to undefined behavior or crashes in the function being called.
 
@@ -479,11 +482,12 @@ void exampleFunction() {
 ---
 
 
-## Concurrency Errors
+## [Concurrency Errors](#concurrency-errors)
 
 Concurrency errors occur when multiple threads or processes attempt to access shared resources simultaneously, leading to undefined behavior, crashes, or incorrect results. This section covers common types of concurrency errors and provides examples and solutions.
+<br>
 
-### DATA_RACE
+### [DATA_RACE](#data_race)
 
 **Description:** A `DATA_RACE` error occurs when two or more threads simultaneously access shared data, and at least one thread modifies the data. This can lead to unpredictable behavior and incorrect results.
 
@@ -554,7 +558,7 @@ int main() {
 -   `std::lock_guard<std::mutex> lock(mtx);` ensures that only one thread can access the critical section at a time, preventing data races.
 <br>
 
-### LOCK
+### [LOCK](#lock)
 
 **Description:** A `LOCK` error occurs when improper use of locking mechanisms leads to deadlocks, livelocks, or other synchronization issues. These errors can cause the program to hang or become unresponsive.
 
@@ -642,12 +646,12 @@ int main() {
 
 ---
 
-## Resource Management Errors
+## [Resource Management Errors](#resource-management-errors)
 
 Resource management errors occur when resources such as memory, file handles, or other system resources are not properly managed. These errors can lead to resource leaks, uninitialized variables, or inefficient use of resources. This section covers common types of resource management errors and provides examples and solutions.
 <br>
 
-### UNINIT
+### [UNINIT](#uninit)
 
 **Description:** An `UNINIT` error occurs when a variable is used before it has been initialized. This can lead to unpredictable behavior or crashes, as the variable may contain garbage values.
 
@@ -738,7 +742,7 @@ void exampleFunction() {
 **Explanation:**    `file.close();` ensures that the file is properly closed, releasing the resource.
 <br>
 
-### UNUSED_VALUE
+### [UNUSED_VALUE](#unused_value)
 
 **Description:** An `UNUSED_VALUE` error occurs when a variable is assigned a value that is never used. This can lead to inefficient code and potential logical errors.
 
