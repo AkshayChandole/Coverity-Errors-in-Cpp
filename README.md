@@ -1350,19 +1350,172 @@ int main() {
 
 ---
 
-## Data Integrity Errors
+## [Data Integrity Errors](#data-integrity-errors)
 
-### DIVIDE_BY_ZERO
+Data integrity errors occur when operations on data lead to incorrect or unexpected results, potentially compromising the correctness and reliability of a program. This section covers common types of data integrity errors, their implications, and how to mitigate them.
 
-_Explanation and example of DIVIDE_BY_ZERO error._
+<br>
 
-### UNINTENDED_CONVERSION
+### [DIVIDE_BY_ZERO](#divide_by_zero)
 
-_Explanation and example of UNINTENDED_CONVERSION error._
+**Description:** A `DIVIDE_BY_ZERO` error occurs when a program attempts to divide a number by zero, leading to undefined behavior, crashes, or exceptions.
 
-### SIGN_EXTENSION
+**Example:**
 
-_Explanation and example of SIGN_EXTENSION error._
+```cpp
+#include <iostream>
+
+void divide(int a, int b) {
+    int result = a / b; // DIVIDE_BY_ZERO: If b is zero, this will cause an error
+    std::cout << "Result: " << result << std::endl;
+}
+
+int main() {
+    int numerator = 10;
+    int denominator = 0;
+
+    divide(numerator, denominator); // Potential divide by zero
+    return 0;
+}
+```
+
+**Explanation:**   Dividing `a` by `b` without checking if `b` is zero can cause a divide-by-zero error.
+
+**Fix:** Check if the denominator is zero before performing the division.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+void divide(int a, int b) {
+    if (b == 0) {
+        std::cerr << "Error: Division by zero" << std::endl;
+        return;
+    }
+    int result = a / b;
+    std::cout << "Result: " << result << std::endl;
+}
+
+int main() {
+    int numerator = 10;
+    int denominator = 0;
+
+    divide(numerator, denominator); // Safely handles divide by zero
+    return 0;
+}
+```
+
+**Explanation:**  Checking if `b` is zero before performing the division prevents the divide-by-zero error.
+
+<br>
+
+### [UNINTENDED_CONVERSION](#unintended_conversion)
+
+**Description:** An `UNINTENDED_CONVERSION` error occurs when a value is implicitly converted to another type, leading to unexpected behavior or loss of data.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void convertAndPrint(double value) {
+    int intValue = value; // UNINTENDED_CONVERSION: Implicit conversion from double to int
+    std::cout << "Converted value: " << intValue << std::endl;
+}
+
+int main() {
+    double largeValue = 12345.6789;
+
+    convertAndPrint(largeValue); // May lose precision
+    return 0;
+}
+```
+
+**Explanation:**   The implicit conversion from `double` to `int` can lead to loss of precision and unexpected results.
+
+**Fix:** Use explicit casting and handle the conversion carefully to avoid unintended consequences.
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+
+void convertAndPrint(double value) {
+    if (value > static_cast<double>(INT_MAX) || value < static_cast<double>(INT_MIN)) {
+        std::cerr << "Error: Value out of int range" << std::endl;
+        return;
+    }
+    int intValue = static_cast<int>(value); // Explicit conversion with range check
+    std::cout << "Converted value: " << intValue << std::endl;
+}
+
+int main() {
+    double largeValue = 12345.6789;
+
+    convertAndPrint(largeValue); // Safely handles conversion
+    return 0;
+}
+```
+
+**Explanation:**   Using explicit casting with a range check ensures that the conversion is handled safely.
+
+<br>
+
+
+### [SIGN_EXTENSION](#sign_extension)
+
+**Description:** A `SIGN_EXTENSION` error occurs when a signed value is assigned to an unsigned type, leading to unexpected results due to sign extension.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void signExtension(short value) {
+    unsigned int extendedValue = value; // SIGN_EXTENSION: Implicit conversion from signed to unsigned
+    std::cout << "Extended value: " << extendedValue << std::endl;
+}
+
+int main() {
+    short negativeValue = -1;
+
+    signExtension(negativeValue); // May produce unexpected result
+    return 0;
+}
+```
+
+**Explanation:**   The implicit conversion from `short` (signed) to `unsigned int` can lead to unexpected results due to sign extension.
+
+**Fix:** Use appropriate casting and handle the conversion carefully to avoid sign extension issues.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+void signExtension(short value) {
+    if (value < 0) {
+        std::cerr << "Error: Negative value cannot be converted to unsigned" << std::endl;
+        return;
+    }
+    unsigned int extendedValue = static_cast<unsigned int>(value); // Explicit conversion
+    std::cout << "Extended value: " << extendedValue << std::endl;
+}
+
+int main() {
+    short negativeValue = -1;
+
+    signExtension(negativeValue); // Safely handles sign extension
+    return 0;
+}
+```
+
+**Explanation:**    Checking for negative values before converting to an unsigned type prevents sign extension issues.
+
+<br>
+
+
+---
 
 ## Logical Errors
 
