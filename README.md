@@ -1517,15 +1517,110 @@ int main() {
 
 ---
 
-## Logical Errors
+## [Logical Errors](#logical-errors)
 
-### CONSTANT_EXPRESSION_RESULT
+Logical errors occur when the logic of a program is flawed, leading to incorrect behavior or results. These errors can be subtle and difficult to detect, as they often do not produce immediate runtime errors. This section covers common types of logical errors, their implications, and how to mitigate them.
 
-_Explanation and example of CONSTANT_EXPRESSION_RESULT error._
+<br>
 
-### LOGICAL_OP
+### [CONSTANT_EXPRESSION_RESULT](#constant_expression_result)
 
-_Explanation and example of LOGICAL_OP error._
+**Description:** A `CONSTANT_EXPRESSION_RESULT` error occurs when an expression involving constants produces a result that is always the same, regardless of runtime input. This can indicate redundant or incorrect logic in the code.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void checkValue(int value) {
+    if (value > 10 && value < 5) { // CONSTANT_EXPRESSION_RESULT: This condition is always false
+        std::cout << "Value is between 10 and 5" << std::endl;
+    }
+}
+
+int main() {
+    int testValue = 7;
+    checkValue(testValue); // Will never print the message
+    return 0;
+}
+```
+
+**Explanation:**   The condition `value > 10 && value < 5` is always false, indicating a logical error in the code.
+
+**Fix:** Correct the logical condition to reflect the intended behavior.
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+
+void checkValue(int value) {
+    if (value > 5 && value < 10) { // Corrected condition
+        std::cout << "Value is between 5 and 10" << std::endl;
+    }
+}
+
+int main() {
+    int testValue = 7;
+    checkValue(testValue); // Will correctly print the message if the value is between 5 and 10
+    return 0;
+}
+```
+
+**Explanation:**  The condition is corrected to `value > 5 && value < 10`, accurately reflecting the intended logic.
+
+<br>
+
+
+### [LOGICAL_OP](#logical_op)
+
+**Description:** A `LOGICAL_OP` error occurs when the use of logical operators (such as `&&` or `||`) leads to unintended behavior, often due to incorrect operator precedence or flawed conditions.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void checkConditions(int a, int b) {
+    if (a > 0 && b < 0 || a < 0 && b > 0) { // LOGICAL_OP: Possible precedence issue
+        std::cout << "One value is positive, and the other is negative" << std::endl;
+    }
+}
+
+int main() {
+    int x = 5, y = -3;
+    checkConditions(x, y); // May not work as intended due to logical operator precedence
+    return 0;
+}
+```
+
+**Explanation:**  The condition `a > 0 && b < 0 || a < 0 && b > 0` may not work as intended due to operator precedence, leading to incorrect results.
+
+**Fix:** Use parentheses to explicitly define the intended precedence and logic.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+void checkConditions(int a, int b) {
+    if ((a > 0 && b < 0) || (a < 0 && b > 0)) { // Corrected logical condition with parentheses
+        std::cout << "One value is positive, and the other is negative" << std::endl;
+    }
+}
+
+int main() {
+    int x = 5, y = -3;
+    checkConditions(x, y); // Will correctly check the intended conditions
+    return 0;
+}
+```
+
+**Explanation:**  Using parentheses, the logical condition is explicitly defined, ensuring the correct evaluation of the conditions.
+
+<br>
+
+
+---
 
 ## Performance Issues
 
