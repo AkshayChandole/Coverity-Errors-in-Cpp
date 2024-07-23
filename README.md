@@ -975,19 +975,166 @@ void exampleFunction(int value) {
 
 ---
 
-## API Usage Errors
+## [API Usage Errors](#api-usage-errors)
 
-### BAD_FREE
+API usage errors occur when functions or methods from libraries or APIs are used incorrectly. These errors can lead to crashes, memory corruption, or undefined behavior. This section covers common types of API usage errors and provides examples and solutions.
 
-_Explanation and example of BAD_FREE error._
+<br>
 
-### BAD_ALLOC
+### [BAD_FREE](#bad_free)
 
-_Explanation and example of BAD_ALLOC error._
+**Description:** A `BAD_FREE` error occurs when memory is freed incorrectly, such as freeing memory that was not allocated, freeing the same memory twice, or freeing a non-heap pointer. This can lead to memory corruption and crashes.
 
-### MISRA_C
+**Example:**
 
-_Explanation and example of MISRA_C error._
+```cpp
+#include <iostream>
+#include <cstdlib>
+
+void exampleFunction() {
+    int stackVar = 10;
+    int* heapVar = (int*)malloc(sizeof(int));
+    free(heapVar); // Correctly freeing heap memory
+    free(heapVar); // BAD_FREE: Double free, leads to undefined behavior
+
+    free(&stackVar); // BAD_FREE: Freeing non-heap memory
+}
+```
+
+**Explanation:**
+
+-   `free(heapVar);` is correct, but freeing `heapVar` again leads to a double free error.
+-   `free(&stackVar);` attempts to free a non-heap variable, causing a `BAD_FREE` error.
+
+**Fix:** Ensure that each piece of memory is freed only once and that only heap memory is freed.
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+#include <cstdlib>
+
+void exampleFunction() {
+    int* heapVar = (int*)malloc(sizeof(int));
+
+    if (heapVar != nullptr) {
+        free(heapVar); // Correctly freeing heap memory
+        heapVar = nullptr; // Avoid double free by setting pointer to nullptr
+    }
+}
+```
+
+**Explanation:**  `heapVar = nullptr;` ensures that the pointer is not freed again.
+
+<br>
+
+### [BAD_ALLOC](#bad_alloc)
+
+**Description:** A `BAD_ALLOC` error occurs when dynamic memory allocation fails and the allocated memory is used without checking for null. This can lead to null pointer dereference errors.
+
+**Example:**
+```cpp
+#include <iostream>
+#include <new>
+
+void exampleFunction() {
+    int* ptr = new int[1000000000]; // May throw bad_alloc exception if allocation fails
+
+    *ptr = 10; // BAD_ALLOC: Using allocated memory without checking if allocation succeeded
+}
+
+int main() {
+    try {
+        exampleFunction();
+    } catch (std::bad_alloc& e) {
+        std::cerr << "Memory allocation failed: " << e.what() << std::endl;
+    }
+    return 0;
+}
+```
+
+**Explanation:**
+
+-   `int* ptr = new int[1000000000];` may throw a `std::bad_alloc` exception if the allocation fails.
+-   `*ptr = 10;` dereferences the pointer without checking if allocation succeeded.
+
+**Fix:** Use exception handling or check for null after allocation.
+
+**Fixed Example Using Exception Handling:**
+
+```cpp
+#include <iostream>
+#include <new>
+
+void exampleFunction() {
+    try {
+        int* ptr = new int[1000000000]; // May throw bad_alloc exception if allocation fails
+
+        *ptr = 10; // Safe to use after allocation
+        delete[] ptr; // Free allocated memory
+    } catch (std::bad_alloc& e) {
+        std::cerr << "Memory allocation failed: " << e.what() << std::endl;
+    }
+}
+
+int main() {
+    exampleFunction();
+    return 0;
+}
+```
+
+**Explanation:**  The allocation is enclosed in a `try-catch` block to handle `std::bad_alloc`.
+
+<br>
+
+### [MISRA_C](#misra_c)
+
+**Description:** `MISRA_C` refers to violations of the MISRA C guidelines, which are a set of software development guidelines for the C programming language, aimed at ensuring safety, portability, and reliability, particularly in embedded systems.
+
+**Example:**
+```cpp
+#include <iostream>
+
+void exampleFunction(int x) {
+    if (x = 0) { // MISRA_C: Assignment inside conditional statement, should be '=='
+        std::cout << "x is zero" << std::endl;
+    }
+}
+
+int main() {
+    exampleFunction(10);
+    return 0;
+}
+```
+
+**Explanation:**   `if (x = 0)` is an assignment instead of a comparison, violating MISRA C guidelines.
+
+**Fix:** Follow MISRA C guidelines to write safer and more reliable code.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction(int x) {
+    if (x == 0) { // Correct comparison
+        std::cout << "x is zero" << std::endl;
+    }
+}
+
+int main() {
+    exampleFunction(10);
+    return 0;
+}
+```
+
+**Explanation:**
+
+-   `if (x == 0)` correctly compares `x` to zero, adhering to MISRA C guidelines.
+
+<br>
+
+
+---
 
 ## Security Vulnerabilities
 
