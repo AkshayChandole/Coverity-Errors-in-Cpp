@@ -75,9 +75,9 @@ This repository contains examples and explanations of various types of errors de
 ----------
 
 
-## Introduction
+## [Introduction](#introduction)
 
-### About Coverity
+### [About Coverity](#about-coverity)
 
 Coverity is a static analysis tool used to identify software defects and vulnerabilities in source code. It analyzes code for potential issues that might not be easily detected during regular testing, such as memory leaks, null pointer dereferences, concurrency issues, and more. By using Coverity, developers can ensure higher code quality and security by addressing problems early in the development lifecycle.
 
@@ -89,7 +89,7 @@ Coverity performs various types of analyses, including:
 
 Coverity helps in maintaining a robust and secure codebase by integrating seamlessly into the development workflow and providing actionable insights into potential problems.
 
-### Purpose of This Repository
+### Purpose of This Repository](#purpose-of-this-repository)
 
 The purpose of this repository is to demonstrate common Coverity errors detected in C++ code and provide examples of each error type. This repository aims to:
 
