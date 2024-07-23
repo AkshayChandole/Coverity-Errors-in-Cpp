@@ -1136,19 +1136,219 @@ int main() {
 
 ---
 
-## Security Vulnerabilities
+## [Security Vulnerabilities](#security-vulnerabilities)
 
-### TAINTED_SCALAR
+Security vulnerabilities occur when code can be exploited to compromise the confidentiality, integrity, or availability of a system. This section covers common types of security vulnerabilities, their implications, and how to mitigate them.
 
-_Explanation and example of TAINTED_SCALAR error._
+<br>
 
-### SQL_INJECTION
+### [TAINTED_SCALAR](#tainted_scalar)
 
-_Explanation and example of SQL_INJECTION error._
+**Description:** A `TAINTED_SCALAR` vulnerability occurs when a scalar value (such as an integer or floating-point number) derived from untrusted input is used without proper validation or sanitization. This can lead to security issues such as buffer overflows or unexpected behavior.
 
-### BUFFER_SIZE
+**Example:**
 
-_Explanation and example of BUFFER_SIZE error._
+```cpp
+#include <iostream>
+
+void processInput(int index, int* array, int size) {
+    if (index >= 0 && index < size) {
+        array[index] = 42; // TAINTED_SCALAR: index is not validated
+    } else {
+        std::cerr << "Invalid index" << std::endl;
+    }
+}
+
+int main() {
+    int size = 10;
+    int* array = new int[size];
+    int index;
+
+    std::cout << "Enter index: ";
+    std::cin >> index;
+
+    processInput(index, array, size);
+
+    delete[] array;
+    return 0;
+}
+```
+
+**Explanation:**    The `index` input is taken from the user and used to access the array without proper validation, leading to potential out-of-bounds access.
+
+**Fix:** Validate or sanitize the untrusted input before using it.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+void processInput(int index, int* array, int size) {
+    if (index >= 0 && index < size) {
+        array[index] = 42; // Safe use of index
+    } else {
+        std::cerr << "Invalid index" << std::endl;
+    }
+}
+
+int main() {
+    int size = 10;
+    int* array = new int[size];
+    int index;
+
+    std::cout << "Enter index: ";
+    std::cin >> index;
+
+    if (index >= 0 && index < size) {
+        processInput(index, array, size);
+    } else {
+        std::cerr << "Error: Index out of bounds" << std::endl;
+    }
+
+    delete[] array;
+    return 0;
+}
+```
+
+**Explanation:** The `index` input is validated to ensure it is within the bounds of the array before being used.
+
+<br>
+
+### [SQL_INJECTION](#sql_injection)
+
+**Description:** An `SQL_INJECTION` vulnerability occurs when untrusted input is directly included in an SQL query, allowing attackers to manipulate the query and potentially access or modify the database in unauthorized ways.
+
+**Example:**
+
+```cpp
+#include <iostream>
+#include <string>
+#include <mysql/mysql.h>
+
+void executeQuery(MYSQL* conn, const std::string& userInput) {
+    std::string query = "SELECT * FROM users WHERE username = '" + userInput + "'"; // SQL_INJECTION
+    mysql_query(conn, query.c_str());
+}
+
+int main() {
+    MYSQL* conn = mysql_init(NULL);
+    mysql_real_connect(conn, "localhost", "root", "password", "database", 0, NULL, 0);
+
+    std::string userInput;
+    std::cout << "Enter username: ";
+    std::cin >> userInput;
+
+    executeQuery(conn, userInput);
+
+    mysql_close(conn);
+    return 0;
+}
+```
+
+**Explanation:**  The `userInput` is directly concatenated into the SQL query, allowing an attacker to manipulate the query through malicious input.
+
+**Fix:** Use prepared statements or parameterized queries to prevent SQL injection.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+#include <string>
+#include <mysql/mysql.h>
+
+void executeQuery(MYSQL* conn, const std::string& userInput) {
+    const char* query = "SELECT * FROM users WHERE username = ?";
+    MYSQL_STMT* stmt = mysql_stmt_init(conn);
+    mysql_stmt_prepare(stmt, query, strlen(query));
+
+    MYSQL_BIND bind[1];
+    memset(bind, 0, sizeof(bind));
+
+    bind[0].buffer_type = MYSQL_TYPE_STRING;
+    bind[0].buffer = (char*)userInput.c_str();
+    bind[0].buffer_length = userInput.length();
+
+    mysql_stmt_bind_param(stmt, bind);
+    mysql_stmt_execute(stmt);
+    mysql_stmt_close(stmt);
+}
+
+int main() {
+    MYSQL* conn = mysql_init(NULL);
+    mysql_real_connect(conn, "localhost", "root", "password", "database", 0, NULL, 0);
+
+    std::string userInput;
+    std::cout << "Enter username: ";
+    std::cin >> userInput;
+
+    executeQuery(conn, userInput);
+
+    mysql_close(conn);
+    return 0;
+}
+```
+
+**Explanation:**  Prepared statements with parameterized queries are used to safely include user input in the SQL query.
+
+<br>
+
+
+### [BUFFER_SIZE](#buffer_size)
+
+**Description:** A `BUFFER_SIZE` vulnerability occurs when the size of a buffer is not properly handled, leading to potential buffer overflows or underflows, which can be exploited to execute arbitrary code or cause a crash.
+
+**Example:**
+
+```cpp
+#include <iostream>
+#include <cstring>
+
+void unsafeCopy(const char* input) {
+    char buffer[10];
+    strcpy(buffer, input); // BUFFER_SIZE: Potential buffer overflow
+}
+
+int main() {
+    char userInput[100];
+    std::cout << "Enter input: ";
+    std::cin >> userInput;
+
+    unsafeCopy(userInput);
+    return 0;
+}
+```
+
+**Explanation:**    The `strcpy` function copies the `input` into `buffer` without checking if the input size exceeds the buffer size, leading to a potential buffer overflow.
+
+**Fix:** Use safer string handling functions that check buffer sizes.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+#include <cstring>
+
+void safeCopy(const char* input) {
+    char buffer[10];
+    strncpy(buffer, input, sizeof(buffer) - 1); // Ensure buffer is not overflowed
+    buffer[sizeof(buffer) - 1] = '\0'; // Null-terminate the buffer
+}
+
+int main() {
+    char userInput[100];
+    std::cout << "Enter input: ";
+    std::cin >> userInput;
+
+    safeCopy(userInput);
+    return 0;
+}
+```
+
+**Explanation:**   `strncpy` is used to copy the input to the buffer with a size limit, and the buffer is explicitly null-terminated to prevent overflow.
+
+<br>
+
+---
 
 ## Data Integrity Errors
 
