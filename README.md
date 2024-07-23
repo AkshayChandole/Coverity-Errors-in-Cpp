@@ -1622,15 +1622,148 @@ int main() {
 
 ---
 
-## Performance Issues
+## [Performance Issues](#performance-issues)
 
-### INEFFICIENT_ALGORITHM
+Performance issues can significantly impact the efficiency and speed of a program. Identifying and addressing these issues is crucial for creating high-performance applications. This section covers common types of performance issues, their implications, and how to mitigate them.
 
-_Explanation and example of INEFFICIENT_ALGORITHM error._
+<br>
 
-### COPY_INSTEAD_OF_MOVE
+### [INEFFICIENT_ALGORITHM](#inefficient_algorithm)
 
-_Explanation and example of COPY_INSTEAD_OF_MOVE error._
+**Description:** An `INEFFICIENT_ALGORITHM` error occurs when an algorithm is implemented in a way that is not optimal, leading to unnecessary computation or poor performance. This can happen due to high time complexity, excessive use of resources, or redundant operations.
+
+**Example:**
+```cpp
+#include <iostream>
+#include <vector>
+
+// Inefficient algorithm: O(n^2) complexity
+void removeDuplicates(std::vector<int>& nums) {
+    for (size_t i = 0; i < nums.size(); ++i) {
+        for (size_t j = i + 1; j < nums.size(); ++j) {
+            if (nums[i] == nums[j]) {
+                nums.erase(nums.begin() + j);
+                --j;
+            }
+        }
+    }
+}
+
+int main() {
+    std::vector<int> nums = {1, 2, 2, 3, 4, 4, 5};
+    removeDuplicates(nums);
+
+    for (int num : nums) {
+        std::cout << num << " ";
+    }
+    return 0;
+}
+```
+
+**Explanation:**   The nested loops result in O(n^2) complexity, which is inefficient for large datasets.
+
+**Fix:** Use a more efficient algorithm, such as a `set` or `unordered_set`, to achieve O(n) complexity.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+
+// Efficient algorithm: O(n) complexity
+void removeDuplicates(std::vector<int>& nums) {
+    std::unordered_set<int> seen;
+    auto it = nums.begin();
+    while (it != nums.end()) {
+        if (seen.find(*it) != seen.end()) {
+            it = nums.erase(it);
+        } else {
+            seen.insert(*it);
+            ++it;
+        }
+    }
+}
+
+int main() {
+    std::vector<int> nums = {1, 2, 2, 3, 4, 4, 5};
+    removeDuplicates(nums);
+
+    for (int num : nums) {
+        std::cout << num << " ";
+    }
+    return 0;
+}
+```
+
+**Explanation:**
+
+-   Using an `unordered_set` to track seen elements reduces the complexity to O(n), making the algorithm more efficient.
+
+<br>
+
+### [COPY_INSTEAD_OF_MOVE](#copy_instead_of_move)
+
+**Description:** A `COPY_INSTEAD_OF_MOVE` error occurs when objects are copied instead of moved, leading to unnecessary data duplication and decreased performance. Moving objects is more efficient as it transfers ownership without duplicating the data.
+
+**Example:**
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+// Function that uses copy semantics
+void addName(std::vector<std::string>& names, std::string name) {
+    names.push_back(name); // COPY_INSTEAD_OF_MOVE: Unnecessary copy
+}
+
+int main() {
+    std::vector<std::string> names;
+    std::string name = "John Doe";
+    addName(names, name);
+
+    for (const auto& n : names) {
+        std::cout << n << std::endl;
+    }
+    return 0;
+}
+```
+
+**Explanation:**   The `name` string is copied into the vector, which is less efficient than moving it.
+
+**Fix:** Use move semantics to transfer ownership of the string without copying its data.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+// Function that uses move semantics
+void addName(std::vector<std::string>& names, std::string name) {
+    names.push_back(std::move(name)); // Use std::move to avoid copying
+}
+
+int main() {
+    std::vector<std::string> names;
+    std::string name = "John Doe";
+    addName(names, std::move(name)); // Move the string instead of copying
+
+    for (const auto& n : names) {
+        std::cout << n << std::endl;
+    }
+    return 0;
+}
+```
+
+**Explanation:**  Using `std::move` transfers ownership of the string `name` to the vector, avoiding unnecessary copies and improving performance.
+
+<br>
+
+
+---
 
 ## Miscellaneous
 
