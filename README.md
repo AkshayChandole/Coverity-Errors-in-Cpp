@@ -4,74 +4,74 @@ This repository contains examples and explanations of various types of errors de
 
 ## Table of Contents
 
-1.  [Introduction](#introduction)
-    
-    -   [About Coverity](#about-coverity)
-    -   [Purpose of This Repository](#purpose-of-this-repository)
-    -   [How to Use This Repository](#how-to-use-this-repository)
-2.  [Memory Errors](#memory-errors)
-    
-    -   [USE_AFTER_FREE](#use_after_free)
-    -   [DOUBLE_FREE](#double_free)
-    -   [RESOURCE_LEAK](#resource_leak)
-    -   [OVERRUN](#overrun)
-    -   [MEMORY_LEAK](#memory_leak)
-    -   [COPY_PASTE_ERROR](#copy_paste_error)
-3.  [Null Pointer Errors](#null-pointer-errors)
-    
-    -   [NULL_POINTER](#null_pointer)
-    -   [NULL_RETURNS](#null_returns)
-    -   [FORWARD_NULL](#forward_null)
-4.  [Concurrency Errors](#concurrency-errors)
-    
-    -   [DATA_RACE](#data_race)
-    -   [LOCK](#lock)
-5.  [Resource Management Errors](#resource-management-errors)
-    
-    -   [UNINIT](#uninit)
-    -   [RESOURCE_LEAK](#resource_leak-1)
-    -   [UNUSED_VALUE](#unused_value)
-6.  [Control Flow Errors](#control-flow-errors)
-    
-    -   [DEADCODE](#deadcode)
-    -   [REVERSE_INULL](#reverse_inull)
-    -   [INFINITE_LOOP](#infinite_loop)
-    -   [UNREACHABLE](#unreachable)
-7.  [API Usage Errors](#api-usage-errors)
-    
-    -   [BAD_FREE](#bad_free)
-    -   [BAD_ALLOC](#bad_alloc)
-    -   [MISRA_C](#misra_c)
-8.  [Security Vulnerabilities](#security-vulnerabilities)
-    
-    -   [TAINTED_SCALAR](#tainted_scalar)
-    -   [SQL_INJECTION](#sql_injection)
-    -   [BUFFER_SIZE](#buffer_size)
-9.  [Data Integrity Errors](#data-integrity-errors)
-    
-    -   [DIVIDE_BY_ZERO](#divide_by_zero)
-    -   [UNINTENDED_CONVERSION](#unintended_conversion)
-    -   [SIGN_EXTENSION](#sign_extension)
-10.  [Logical Errors](#logical-errors)
-    
-    -   [CONSTANT_EXPRESSION_RESULT](#constant_expression_result)
-    -   [LOGICAL_OP](#logical_op)
-11.  [Performance Issues](#performance-issues)
-    
-    -   [INEFFICIENT_ALGORITHM](#inefficient_algorithm)
-    -   [COPY_INSTEAD_OF_MOVE](#copy_instead_of_move)
-12.  [Miscellaneous](#miscellaneous)
-    
-    -   [UNREACHABLE_CODE](#unreachable_code)
-    -   [UNUSED_CODE](#unused_code)
-    -   [MISSING_RETURN](#missing_return)
-    -   [VARARGS](#varargs)
-13.  [Conclusion](#conclusion)
-    
-    -   [Summary](#summary)
-    -   [Further Reading](#further-reading)
-    -   [Contributing](#contributing)
-    -   [License](#license)
+1. [Introduction](#introduction)
+   - [About Coverity](#about-coverity)
+   - [Purpose of This Repository](#purpose-of-this-repository)
+   - [How to Use This Repository](#how-to-use-this-repository)
+
+2. [Memory Errors](#memory-errors)
+   - [USE_AFTER_FREE](#use_after_free)
+   - [DOUBLE_FREE](#double_free)
+   - [RESOURCE_LEAK](#resource_leak)
+   - [OVERRUN](#overrun)
+   - [MEMORY_LEAK](#memory_leak)
+   - [COPY_PASTE_ERROR](#copy_paste_error)
+
+3. [Null Pointer Errors](#null-pointer-errors)
+   - [NULL_POINTER](#null_pointer)
+   - [NULL_RETURNS](#null_returns)
+   - [FORWARD_NULL](#forward_null)
+
+4. [Concurrency Errors](#concurrency-errors)
+   - [DATA_RACE](#data_race)
+   - [LOCK](#lock)
+
+5. [Resource Management Errors](#resource-management-errors)
+   - [UNINIT](#uninit)
+   - [RESOURCE_LEAK](#resource_leak-1)
+   - [UNUSED_VALUE](#unused_value)
+
+6. [Control Flow Errors](#control-flow-errors)
+   - [DEADCODE](#deadcode)
+   - [REVERSE_INULL](#reverse_inull)
+   - [INFINITE_LOOP](#infinite_loop)
+   - [UNREACHABLE](#unreachable)
+
+7. [API Usage Errors](#api-usage-errors)
+   - [BAD_FREE](#bad_free)
+   - [BAD_ALLOC](#bad_alloc)
+   - [MISRA_C](#misra_c)
+
+8. [Security Vulnerabilities](#security-vulnerabilities)
+   - [TAINTED_SCALAR](#tainted_scalar)
+   - [SQL_INJECTION](#sql_injection)
+   - [BUFFER_SIZE](#buffer_size)
+
+9. [Data Integrity Errors](#data-integrity-errors)
+   - [DIVIDE_BY_ZERO](#divide_by_zero)
+   - [UNINTENDED_CONVERSION](#unintended_conversion)
+   - [SIGN_EXTENSION](#sign_extension)
+
+10. [Logical Errors](#logical-errors)
+    - [CONSTANT_EXPRESSION_RESULT](#constant_expression_result)
+    - [LOGICAL_OP](#logical_op)
+
+11. [Performance Issues](#performance-issues)
+    - [INEFFICIENT_ALGORITHM](#inefficient_algorithm)
+    - [COPY_INSTEAD_OF_MOVE](#copy_instead_of_move)
+
+12. [Miscellaneous](#miscellaneous)
+    - [UNREACHABLE_CODE](#unreachable_code)
+    - [UNUSED_CODE](#unused_code)
+    - [MISSING_RETURN](#missing_return)
+    - [VARARGS](#varargs)
+
+13. [Conclusion](#conclusion)
+    - [Summary](#summary)
+    - [Further Reading](#further-reading)
+    - [Contributing](#contributing)
+    - [License](#license)
+
 
 ----------
 
