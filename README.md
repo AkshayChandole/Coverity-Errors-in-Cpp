@@ -791,7 +791,7 @@ void exampleFunction() {
 
 ---
 
-## Control Flow Errors
+## [Control Flow Errors](#control-flow-errors)
 
 Control flow errors occur when the execution path of a program contains logical flaws, leading to unintended behavior such as dead code, infinite loops, or unreachable code segments. This section covers common types of control flow errors and provides examples and solutions.
 <br>
