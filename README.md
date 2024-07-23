@@ -473,9 +473,7 @@ void exampleFunction() {
 }
 ```
 
-**Explanation:**
-
--   `processPointer` checks if the pointer is not `nullptr` before dereferencing it, ensuring safe handling of null pointers.
+**Explanation:**   `processPointer` checks if the pointer is not `nullptr` before dereferencing it, ensuring safe handling of null pointers.
 <br>
 
 
@@ -553,9 +551,8 @@ int main() {
 }
 ```
 
-**Explanation:**
+**Explanation:**  `std::lock_guard<std::mutex> lock(mtx);` ensures that only one thread can access the critical section at a time, preventing data races.
 
--   `std::lock_guard<std::mutex> lock(mtx);` ensures that only one thread can access the critical section at a time, preventing data races.
 <br>
 
 ### [LOCK](#lock)
@@ -638,9 +635,8 @@ int main() {
 }
 ```
 
-**Explanation:**
+**Explanation:**  `std::scoped_lock lock(mtx1, mtx2);` locks both mutexes together in a consistent order, preventing deadlocks.
 
--   `std::scoped_lock lock(mtx1, mtx2);` locks both mutexes together in a consistent order, preventing deadlocks.
 <br>
 
 
@@ -685,9 +681,8 @@ void exampleFunction() {
 }
 ```
 
-**Explanation:**
+**Explanation:** `int value = 0;` initializes the variable, ensuring that it has a defined value before use.
 
--   `int value = 0;` initializes the variable, ensuring that it has a defined value before use.
 <br>
 
 ### [RESOURCE_LEAK](#resource_leak-1)
@@ -714,9 +709,7 @@ void exampleFunction() {
 }
 ```
 
-**Explanation:**
-
--   `std::ifstream file("example.txt");` opens a file, but it is not explicitly closed, leading to a resource leak.
+**Explanation:**  `std::ifstream file("example.txt");` opens a file, but it is not explicitly closed, leading to a resource leak.
 
 **Fix:** Ensure that resources are properly released after use.
 
@@ -782,9 +775,8 @@ void exampleFunction() {
 }
 ```
 
-**Explanation:**
+**Explanation:** The value assigned to `value` is now used before being overwritten, ensuring that assignments are meaningful and efficient.
 
--   The value assigned to `value` is now used before being overwritten, ensuring that assignments are meaningful and efficient.
 <br>
 
 
