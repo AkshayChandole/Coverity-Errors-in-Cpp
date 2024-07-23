@@ -1765,23 +1765,205 @@ int main() {
 
 ---
 
-## Miscellaneous
+## [Miscellaneous](#miscellaneous)
 
-### UNREACHABLE_CODE
+This section covers various types of coding issues that do not fall into the other specific categories but are still important to address for maintaining clean, efficient, and correct code.
 
-_Explanation and example of UNREACHABLE_CODE error._
+<br>
 
-### UNUSED_CODE
 
-_Explanation and example of UNUSED_CODE error._
+### [UNREACHABLE_CODE](#unreachable_code)
 
-### MISSING_RETURN
+**Description:** `UNREACHABLE_CODE` occurs when a portion of code can never be executed due to the structure of the program. This is often a result of logical errors or redundancy and can lead to confusion and maintenance challenges.
 
-_Explanation and example of MISSING_RETURN error._
+**Example:**
 
-### VARARGS
+```cpp
+#include <iostream>
 
-_Explanation and example of VARARGS error._
+void exampleFunction() {
+    return;
+    std::cout << "This will never be printed." << std::endl; // UNREACHABLE_CODE
+}
+
+int main() {
+    exampleFunction();
+    return 0;
+}
+```
+
+**Explanation:**   The `std::cout` statement after `return` is unreachable and will never be executed.
+
+**Fix:** Remove or refactor the unreachable code to clarify the program's flow.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    std::cout << "This will be printed." << std::endl;
+}
+
+int main() {
+    exampleFunction();
+    return 0;
+}
+```
+
+**Explanation:**   The `return` statement is removed, allowing the `std::cout` statement to be executed.
+
+<br>
+
+
+### [UNUSED_CODE](#unused_code)
+
+**Description:** `UNUSED_CODE` refers to code that is never called or used within the program. This can bloat the codebase and make maintenance more difficult.
+
+**Example:**
+```cpp
+#include <iostream>
+
+void unusedFunction() { // UNUSED_CODE
+    std::cout << "This function is never called." << std::endl;
+}
+
+int main() {
+    std::cout << "Main function running." << std::endl;
+    return 0;
+}
+```
+
+**Explanation:**   `unusedFunction` is defined but never called, making it unused code.
+
+**Fix:** Remove the unused code or ensure it is properly integrated into the program.
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+
+// Removed unused function
+
+int main() {
+    std::cout << "Main function running." << std::endl;
+    return 0;
+}
+```
+
+**Explanation:**  The unused function is removed, simplifying the codebase.
+
+<br>
+
+
+### [MISSING_RETURN](#missing_return)
+
+**Description:** `MISSING_RETURN` occurs when a non-void function does not return a value in all possible execution paths. This can lead to undefined behavior and runtime errors.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+int missingReturnFunction(bool condition) {
+    if (condition) {
+        return 1;
+    }
+    // MISSING_RETURN: No return statement for the else case
+}
+
+int main() {
+    bool condition = false;
+    std::cout << "Function result: " << missingReturnFunction(condition) << std::endl;
+    return 0;
+}
+```
+
+**Explanation:**   The function does not return a value if `condition` is false, leading to undefined behavior.
+
+**Fix:** Ensure all code paths in the function return a value.
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+
+int fixedFunction(bool condition) {
+    if (condition) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int main() {
+    bool condition = false;
+    std::cout << "Function result: " << fixedFunction(condition) << std::endl;
+    return 0;
+}
+```
+
+**Explanation:** -   An `else` clause is added to ensure the function always returns a value.
+
+<br>
+
+### [VARARGS](#varargs)
+
+**Description:** `VARARGS` refers to functions that accept a variable number of arguments. These functions can be error-prone and difficult to maintain if not used carefully.
+
+**Example:**
+
+```cpp
+#include <iostream>
+#include <cstdarg>
+
+void printNumbers(int count, ...) {
+    va_list args;
+    va_start(args, count);
+    for (int i = 0; i < count; ++i) {
+        std::cout << va_arg(args, int) << " ";
+    }
+    va_end(args);
+    std::cout << std::endl;
+}
+
+int main() {
+    printNumbers(3, 1, 2, 3); // Correct usage
+    printNumbers(2, 4, 5, 6); // VARARGS: Extra argument not handled
+    return 0;
+}
+```
+
+**Explanation:**    The `printNumbers` function is called with an incorrect number of arguments, which can lead to undefined behavior.
+
+**Fix:** Ensure the correct number of arguments are passed, or use safer alternatives like variadic templates.
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+#include <cstdarg>
+
+void printNumbers(int count, ...) {
+    va_list args;
+    va_start(args, count);
+    for (int i = 0; i < count; ++i) {
+        std::cout << va_arg(args, int) << " ";
+    }
+    va_end(args);
+    std::cout << std::endl;
+}
+
+int main() {
+    printNumbers(3, 1, 2, 3); // Correct usage
+    printNumbers(2, 4, 5);    // Corrected usage
+    return 0;
+}
+```
+
+**Explanation:**   The function calls are corrected to ensure the proper number of arguments are passed, preventing undefined behavior.
+
+<br>
+
+
+---
 
 ## Conclusion
 
