@@ -100,7 +100,7 @@ The purpose of this repository is to demonstrate common Coverity errors detected
 
 By exploring the examples and explanations provided in this repository, developers can gain a deeper understanding of how to identify and fix potential issues in their own code, leading to more reliable and secure software.
 
----
+<hr>
 
 
 ## [Memory Errors](#memory-errors)
@@ -313,7 +313,8 @@ void exampleFunction() {
 **Fix:** Avoid copy-pasting code. Instead, refactor common functionality into reusable functions or classes and ensure proper resource management.
 
 <br>
----
+
+<hr>
 
 ## [Null Pointer Errors](#null-pointer-errors)
 
