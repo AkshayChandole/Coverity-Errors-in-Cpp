@@ -99,7 +99,7 @@ The purpose of this repository is to demonstrate common Coverity errors detected
 
 By exploring the examples and explanations provided in this repository, developers can gain a deeper understanding of how to identify and fix potential issues in their own code, leading to more reliable and secure software.
 
-<hr>
+---
 
 
 ## Memory Errors
@@ -137,6 +137,7 @@ void exampleFunction() {
     // std::cout << *ptr << std::endl; // Safe: accessing a null pointer
 }
 ```
+<br>
 
 ### DOUBLE_FREE
 
@@ -174,7 +175,7 @@ void exampleFunction() {
 	// when it goes out of scope. 
 }
 ```
-
+<br>
 
 ### RESOURCE_LEAK
 
@@ -222,6 +223,7 @@ void exampleFunction() {
     fclose(file); // Properly close the file to prevent resource leak
 }
 ```
+<br>
 
 ### OVERRUN
 
@@ -254,6 +256,7 @@ void exampleFunction() {
     buffer[sizeof(buffer) - 1] = '\0'; // Ensure null termination
 }
 ```
+<br>
 
 ### MEMORY_LEAK
 
@@ -284,6 +287,7 @@ void exampleFunction() {
     // Memory is automatically managed and freed when `ptr` goes out of scope
 }
 ```
+<br>
 
 ### COPY_PASTE_ERROR
 
@@ -306,7 +310,7 @@ void exampleFunction() {
 
 **Fix:** Avoid copy-pasting code. Instead, refactor common functionality into reusable functions or classes and ensure proper resource management.
 
-<br>
+---
 
 ## Null Pointer Errors
 
