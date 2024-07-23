@@ -314,17 +314,169 @@ void exampleFunction() {
 
 ## Null Pointer Errors
 
+Null pointer errors occur when a program attempts to use a pointer that has not been initialized, has been set to `nullptr`, or has been invalidated. These errors can lead to undefined behavior, crashes, and security vulnerabilities. This section covers common types of null pointer errors and provides examples and solutions.
+<br>
+
 ### NULL_POINTER
 
-_Explanation and example of NULL_POINTER error._
+**Description:** A `NULL_POINTER` error occurs when a program dereferences a pointer that is `nullptr` or has not been initialized. This often leads to runtime crashes or undefined behavior.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int* ptr = nullptr; // Pointer is initialized to nullptr
+    
+    // NULL_POINTER: Dereferencing a null pointer
+    std::cout << *ptr << std::endl; // This will cause undefined behavior
+}
+```
+
+**Explanation:**
+
+-   `int* ptr = nullptr;` initializes the pointer to `nullptr`.
+-   Dereferencing `ptr` with `*ptr` leads to undefined behavior and potential crashes.
+
+**Fix:** Always ensure pointers are initialized before use and check if they are `nullptr` before dereferencing.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int value = 10;
+    int* ptr = &value; // Pointer is initialized to a valid address
+    
+    if (ptr) { // Check if the pointer is not nullptr
+        std::cout << *ptr << std::endl; // Safe to dereference
+    } else {
+        std::cerr << "Pointer is null" << std::endl;
+    }
+}
+```
+
+**Explanation:**
+
+-   The pointer `ptr` is checked to ensure it is not `nullptr` before dereferencing.
+<br>
 
 ### NULL_RETURNS
 
-_Explanation and example of NULL_RETURNS error._
+**Description:** A `NULL_RETURNS` error occurs when a function returns a `nullptr` or a null pointer, but the caller does not check for this condition. This can lead to unexpected crashes or logical errors in the program.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+int* getPointer(bool valid) {
+    if (valid) {
+        int* ptr = new int(10);
+        return ptr;
+    } else {
+        return nullptr; // NULL_RETURNS: Function returns a null pointer
+    }
+}
+
+void exampleFunction() {
+    int* ptr = getPointer(false);
+    
+    // NULL_RETURNS: Dereferencing a null pointer without checking
+    std::cout << *ptr << std::endl; // This will cause undefined behavior
+}
+```
+
+**Explanation:**    `getPointer(false)` returns a `nullptr`, but the calling code does not check for this condition before dereferencing `ptr`.
+
+**Fix:** Always check the return value of functions that may return `nullptr` before using the pointer.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+int* getPointer(bool valid) {
+    if (valid) {
+        int* ptr = new int(10);
+        return ptr;
+    } else {
+        return nullptr; // NULL_RETURNS: Function returns a null pointer
+    }
+}
+
+void exampleFunction() {
+    int* ptr = getPointer(false);
+    
+    if (ptr) { // Check if the pointer is not nullptr
+        std::cout << *ptr << std::endl; // Safe to dereference
+        delete ptr; // Free the allocated memory
+    } else {
+        std::cerr << "Received null pointer" << std::endl;
+    }
+}
+```
+
+**Explanation:**
+
+-   The pointer `ptr` is checked before dereferencing, ensuring that null pointers are handled properly.
+<br>
+
 
 ### FORWARD_NULL
 
-_Explanation and example of FORWARD_NULL error._
+**Description:** A `FORWARD_NULL` error occurs when a `nullptr` is passed as an argument to a function that does not handle null pointers correctly. This can lead to undefined behavior or crashes in the function being called.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void processPointer(int* ptr) {
+    // FORWARD_NULL: Function does not handle null pointers
+    std::cout << *ptr << std::endl; // This will cause undefined behavior if ptr is null
+}
+
+void exampleFunction() {
+    int* ptr = nullptr; // Null pointer to be passed
+    
+    processPointer(ptr); // Forwarding the null pointer
+}
+```
+
+**Explanation:**    `processPointer` does not check if `ptr` is `nullptr` before dereferencing, leading to potential issues when `nullptr` is passed.
+
+**Fix:** Ensure functions handle null pointers safely and check for null pointers before performing operations.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+void processPointer(int* ptr) {
+    if (ptr) { // Check if the pointer is not nullptr
+        std::cout << *ptr << std::endl; // Safe to dereference
+    } else {
+        std::cerr << "Received null pointer" << std::endl;
+    }
+}
+
+void exampleFunction() {
+    int* ptr = nullptr; // Null pointer to be passed
+    
+    processPointer(ptr); // Forwarding the null pointer
+}
+```
+
+**Explanation:**
+
+-   `processPointer` checks if the pointer is not `nullptr` before dereferencing it, ensuring safe handling of null pointers.
+<br>
+
+
+---
 
 ## Concurrency Errors
 
