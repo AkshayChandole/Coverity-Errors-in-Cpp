@@ -67,7 +67,6 @@ This repository contains examples and explanations of various types of errors de
 
 13. [Conclusion](#conclusion)
     - [Summary](#summary)
-    - [Further Reading](#further-reading)
     - [Contributing](#contributing)
     - [License](#license)
 
@@ -1965,20 +1964,49 @@ int main() {
 
 ---
 
-## Conclusion
 
-### Summary
+## [Conclusion](#conclusion)
 
-_Summary of the types of errors and their importance._
+In this section, we wrap up the guide by summarizing the key points, providing additional resources for further learning, and offering information on how to contribute to this repository. We also include the licensing information for the repository.
 
-### Further Reading
+<br>
 
-_Links to additional resources on static code analysis and Coverity._
+### [Summary](#summary)
 
-### Contributing
+Throughout this guide, we have covered a variety of common errors and issues that can occur in C++ programming, specifically focusing on those detected by Coverity. We discussed:
 
-_Instructions on how to contribute to this repository._
+-   **Memory Errors:** Issues like use-after-free, double-free, and memory leaks.
+-   **Null Pointer Errors:** Handling null pointers and ensuring safe access.
+-   **Concurrency Errors:** Addressing data races and proper lock management.
+-   **Resource Management Errors:** Ensuring resources are properly initialized and released.
+-   **Control Flow Errors:** Avoiding dead code, infinite loops, and unreachable code.
+-   **API Usage Errors:** Correct use of API functions and avoiding common pitfalls.
+-   **Security Vulnerabilities:** Preventing security issues like SQL injection and buffer overflows.
+-   **Data Integrity Errors:** Maintaining data integrity by avoiding divide-by-zero and unintended conversions.
+-   **Logical Errors:** Ensuring logical correctness in code operations.
+-   **Performance Issues:** Writing efficient code and avoiding unnecessary copying.
+-   **Miscellaneous:** Handling various other coding issues that impact code quality.
 
-### License
+By understanding these errors and implementing the suggested fixes, developers can create more reliable, maintainable, and efficient C++ applications.
 
-_Information about the repository's license._
+<br>
+
+### [Contributing](#contributing)
+
+We welcome contributions to this repository! Whether you want to add new examples, fix existing ones, or improve the documentation, your help is greatly appreciated. To contribute:
+
+1.  **Fork the Repository:** Create a fork of this repository to your GitHub account.
+2.  **Clone the Repository:** Clone your forked repository to your local machine.
+3.  **Create a Branch:** Create a new branch for your changes.
+4.  **Make Changes:** Implement your changes in the new branch.
+5.  **Submit a Pull Request:** Push your changes to your fork and submit a pull request to the main repository.
+
+<br>
+
+### [License](#license)
+
+This project is licensed under the MIT License. You are free to use, modify, and distribute this software under the terms of the MIT License. For more details, see the [LICENSE](https://github.com/AkshayChandole/Coverity-Errors-in-Cpp/blob/main/LICENSE) file.
+
+<br>
+
+---
