@@ -794,6 +794,7 @@ void exampleFunction() {
 ## [Control Flow Errors](#control-flow-errors)
 
 Control flow errors occur when the execution path of a program contains logical flaws, leading to unintended behavior such as dead code, infinite loops, or unreachable code segments. This section covers common types of control flow errors and provides examples and solutions.
+
 <br>
 
 ### [DEADCODE](#deadcode)
@@ -837,6 +838,7 @@ void exampleFunction(int value) {
 ```
 
 **Explanation:**  The redundant condition and dead code have been removed, simplifying the logic.
+
 <br>
 
 ### [REVERSE_INULL](#reverse_inull)
@@ -888,6 +890,7 @@ int main() {
 ```
 
 **Explanation:** The null check is performed before dereferencing the pointer, ensuring safe access.
+
 <br>
 
 ### [INFINITE_LOOP](#infinite_loop)
@@ -928,6 +931,7 @@ void exampleFunction() {
 ```
 
 **Explanation:**    The loop condition is updated so that it can become false, ensuring the loop will terminate.
+
 <br>
 
 ### [UNREACHABLE](#unreachable)
