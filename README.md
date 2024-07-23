@@ -741,6 +741,7 @@ void exampleFunction() {
 ```
 
 **Explanation:**    `file.close();` ensures that the file is properly closed, releasing the resource.
+
 <br>
 
 ### [UNUSED_VALUE](#unused_value)
@@ -792,21 +793,183 @@ void exampleFunction() {
 
 ## Control Flow Errors
 
-### DEADCODE
+Control flow errors occur when the execution path of a program contains logical flaws, leading to unintended behavior such as dead code, infinite loops, or unreachable code segments. This section covers common types of control flow errors and provides examples and solutions.
+<br>
 
-_Explanation and example of DEADCODE error._
+### [DEADCODE](#deadcode)
 
-### REVERSE_INULL
+**Description:** A `DEADCODE` error occurs when a portion of the code can never be executed, often due to incorrect logic or conditions. This can lead to code bloat and maintenance issues.
 
-_Explanation and example of REVERSE_INULL error._
+**Example:**
 
-### INFINITE_LOOP
+```cpp
+#include <iostream>
 
-_Explanation and example of INFINITE_LOOP error._
+void exampleFunction(int value) {
+    if (value < 0) {
+        std::cout << "Value is negative." << std::endl;
+    } else {
+        std::cout << "Value is non-negative." << std::endl;
+    }
 
-### UNREACHABLE
+    if (value >= 0) {
+        std::cout << "This is dead code." << std::endl; // DEADCODE: This condition is always true if the first condition is false
+    }
+}
+```
 
-_Explanation and example of UNREACHABLE error._
+**Explanation:**    The second `if` condition (`value >= 0`) is always true when the first `if` condition (`value < 0`) is false, making the `else` block dead code.
+
+**Fix:** Remove or correct the redundant condition to ensure all code paths are meaningful.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction(int value) {
+    if (value < 0) {
+        std::cout << "Value is negative." << std::endl;
+    } else {
+        std::cout << "Value is non-negative." << std::endl;
+    }
+}
+```
+
+**Explanation:**  The redundant condition and dead code have been removed, simplifying the logic.
+<br>
+
+### [REVERSE_INULL](#reverse_inull)
+
+**Description:** A `REVERSE_INULL` error occurs when a pointer is dereferenced before being checked for null, leading to potential null pointer dereference issues.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction(int* ptr) {
+    *ptr = 10; // REVERSE_INULL: Dereferencing pointer before null check
+
+    if (ptr == nullptr) {
+        std::cerr << "Error: Null pointer dereference" << std::endl;
+    }
+}
+
+int main() {
+    int* ptr = nullptr;
+    exampleFunction(ptr);
+    return 0;
+}
+```
+
+**Explanation:**    `*ptr = 10;` dereferences the pointer before checking if it is null, which can lead to a crash.
+
+**Fix:** Check for null before dereferencing the pointer.
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+
+void exampleFunction(int* ptr) {
+    if (ptr == nullptr) {
+        std::cerr << "Error: Null pointer dereference" << std::endl;
+        return;
+    }
+
+    *ptr = 10; // Safe to dereference after null check
+}
+
+int main() {
+    int* ptr = nullptr;
+    exampleFunction(ptr);
+    return 0;
+}
+```
+
+**Explanation:** The null check is performed before dereferencing the pointer, ensuring safe access.
+<br>
+
+### [INFINITE_LOOP](#infinite_loop)
+
+**Description:** An `INFINITE_LOOP` error occurs when a loop's termination condition is never met, causing the program to hang or become unresponsive.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int counter = 0;
+
+    while (counter >= 0) { // INFINITE_LOOP: This condition is always true
+        std::cout << "Counter: " << counter << std::endl;
+        // Missing increment of counter or condition update
+    }
+}
+```
+
+**Explanation:**    The loop's condition (`counter >= 0`) is always true, leading to an infinite loop.
+
+**Fix:** Ensure the loop condition can eventually become false by updating the condition variable appropriately.
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int counter = 0;
+
+    while (counter < 10) { // Loop condition will eventually become false
+        std::cout << "Counter: " << counter << std::endl;
+        ++counter; // Increment counter to update condition
+    }
+}
+```
+
+**Explanation:**    The loop condition is updated so that it can become false, ensuring the loop will terminate.
+<br>
+
+### [UNREACHABLE](#unreachable)
+
+**Description:** An `UNREACHABLE` error occurs when a portion of code can never be executed due to logic that prevents control from reaching that code. This can be caused by return statements, breaks, or incorrect conditional logic.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction(int value) {
+    if (value < 0) {
+        return; // Early return makes the following code unreachable
+        std::cout << "This is unreachable code." << std::endl; // UNREACHABLE
+    }
+}
+```
+
+**Explanation:**    The `return` statement causes the function to exit, making the subsequent `std::cout` statement unreachable.
+
+**Fix:** Remove or reposition unreachable code to ensure that all code paths are reachable.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction(int value) {
+    if (value < 0) {
+        return; // Early return
+    }
+
+    std::cout << "This code is reachable." << std::endl; // Code is now reachable
+}
+```
+
+**Explanation:** The unreachable code is removed, ensuring that all remaining code paths are reachable.
+
+<br>
+
+---
 
 ## API Usage Errors
 
