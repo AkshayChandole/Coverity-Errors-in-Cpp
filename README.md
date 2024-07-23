@@ -101,31 +101,212 @@ By exploring the examples and explanations provided in this repository, develope
 
 <hr>
 
+
 ## Memory Errors
+
+Memory errors are among the most critical issues in C++ programming, often leading to crashes, undefined behavior, or security vulnerabilities. Coverity detects various types of memory-related issues to help developers identify and fix these problems. Below are detailed explanations and examples for common memory errors:
 
 ### USE_AFTER_FREE
 
-_Explanation and example of USE_AFTER_FREE error._
+**Description:** The `USE_AFTER_FREE` error occurs when a program accesses memory after it has been freed. This can lead to unpredictable behavior, crashes, or security vulnerabilities, as the memory may have been reallocated and modified elsewhere.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int* ptr = new int(10);
+    delete ptr;
+    std::cout << *ptr << std::endl; // USE_AFTER_FREE: Accessing freed memory
+}
+```
+
+**Explanation:** After calling `delete` on `ptr`, the memory it pointed to is freed. Accessing `*ptr` afterwards is unsafe and can cause undefined behavior.
+
+**Fix:** Ensure that you do not access or modify memory after it has been freed. Consider setting pointers to `nullptr` after deletion to avoid accidental usage:
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int* ptr = new int(10);
+    delete ptr;
+    ptr = nullptr;
+    // std::cout << *ptr << std::endl; // Safe: accessing a null pointer
+}
+```
 
 ### DOUBLE_FREE
 
-_Explanation and example of DOUBLE_FREE error._
+**Description:** The `DOUBLE_FREE` error occurs when memory is freed more than once. This can lead to program crashes or memory corruption, as the memory allocator may not handle multiple frees gracefully.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int* ptr = new int(10);
+    delete ptr;
+    delete ptr; // DOUBLE_FREE: Freeing memory twice
+}
+``` 
+
+**Explanation:** `ptr` is freed twice, which can cause undefined behavior and potential crashes.
+
+**Fix:** Ensure that each piece of memory is freed only once. Use smart pointers (e.g., `std::unique_ptr` or `std::shared_ptr`) to automatically manage memory and avoid double frees.
+
+**Fixed Example:**
+```cpp
+#include <iostream> 
+#include <memory> 
+
+void exampleFunction() { 
+	// Create a unique_ptr to manage dynamic memory 
+	std::unique_ptr<int> ptr = std::make_unique<int>(10); 
+	
+	// Access the value 
+	std::cout << "Value: " << *ptr << std::endl; 
+
+	// No need to manually delete ptr; it will be automatically freed 
+	// when it goes out of scope. 
+}
+```
+
 
 ### RESOURCE_LEAK
 
-_Explanation and example of RESOURCE_LEAK error._
+**Description:** The `RESOURCE_LEAK` error occurs when a program fails to release resources such as memory, file handles, or sockets. This leads to resource exhaustion and can degrade performance or stability over time.
+
+**Example:**
+
+```cpp
+#include <cstdio> // For C-style file handling
+
+void exampleFunction() {
+    FILE* file = fopen("example.txt", "w");
+    
+    if (file == nullptr) {
+        std::cerr << "Error opening file" << std::endl;
+        return;
+    }
+    
+    // RESOURCE_LEAK: The file is opened but not closed
+    // `file` handle is leaked if the function exits without closing the file
+}
+``` 
+
+**Explanation:**
+
+-   `FILE* file = fopen("example.txt", "w");` opens a file for writing.
+-   If the file is opened successfully, but the function exits (either normally or due to an error) without calling `fclose(file);`, the file handle remains open, resulting in a resource leak.
+
+**Fix:** Ensure that all opened files are properly closed to release the resource.
+
+**Fixed Example:**
+```cpp
+#include <cstdio> // For C-style file handling
+
+void exampleFunction() {
+    FILE* file = fopen("example.txt", "w");
+    
+    if (file == nullptr) {
+        std::cerr << "Error opening file" << std::endl;
+        return;
+    }
+    
+    // Use the file...
+    
+    fclose(file); // Properly close the file to prevent resource leak
+}
+```
 
 ### OVERRUN
 
-_Explanation and example of OVERRUN error._
+**Description:** The `OVERRUN` error, also known as a buffer overflow, occurs when a program writes data beyond the bounds of allocated memory. This can overwrite adjacent memory and lead to crashes or security vulnerabilities.
+
+**Example:**
+
+```cpp
+#include <cstring>
+#include <iostream>
+
+void exampleFunction() {
+    char buffer[10];
+    strcpy(buffer, "This string is too long for the buffer"); // OVERRUN: Buffer overflow
+}
+```
+
+**Explanation:** The `strcpy` function writes more data into `buffer` than it can hold, leading to a buffer overflow.
+
+**Fix:** Use safer functions like `strncpy` or `std::string` to avoid overruns:
+
+**Fixed Example:**
+```cpp
+#include <cstring>
+#include <iostream>
+
+void exampleFunction() {
+    char buffer[10];
+    strncpy(buffer, "Safe string", sizeof(buffer) - 1);
+    buffer[sizeof(buffer) - 1] = '\0'; // Ensure null termination
+}
+```
 
 ### MEMORY_LEAK
 
-_Explanation and example of MEMORY_LEAK error._
+**Description:** The `MEMORY_LEAK` error occurs when a program allocates memory but fails to release it. Over time, this leads to increased memory usage and potential crashes due to resource exhaustion.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int* ptr = new int(10);
+    // MEMORY_LEAK: Memory allocated but not freed
+}
+```
+
+**Explanation:** The allocated memory is not freed, leading to a memory leak.
+
+**Fix:** Ensure that all allocated memory is properly freed. Consider using smart pointers or containers that automatically manage memory.
+
+**Fixed Example:**
+```cpp
+#include <iostream>
+#include <memory>
+
+void exampleFunction() {
+    std::unique_ptr<int> ptr = std::make_unique<int>(10);
+    // Memory is automatically managed and freed when `ptr` goes out of scope
+}
+```
 
 ### COPY_PASTE_ERROR
 
-_Explanation and example of COPY_PASTE_ERROR error._
+**Description:** The `COPY_PASTE_ERROR` occurs when code is copied and pasted without proper adjustments, leading to errors or unintended behavior. This often results in resource management issues or incorrect logic.
+
+**Example:**
+
+```cpp
+#include <iostream>
+
+void exampleFunction() {
+    int* ptr = new int(10);
+    delete ptr;
+    // COPY_PASTE_ERROR: Copy-pasted code without adjustment
+    // ptr is used without proper handling
+}
+```
+
+**Explanation:** Copy-pasting code without modifying resource management can lead to errors.
+
+**Fix:** Avoid copy-pasting code. Instead, refactor common functionality into reusable functions or classes and ensure proper resource management.
+
+<br>
 
 ## Null Pointer Errors
 
