@@ -478,15 +478,169 @@ void exampleFunction() {
 
 ---
 
+
 ## Concurrency Errors
+
+Concurrency errors occur when multiple threads or processes attempt to access shared resources simultaneously, leading to undefined behavior, crashes, or incorrect results. This section covers common types of concurrency errors and provides examples and solutions.
 
 ### DATA_RACE
 
-_Explanation and example of DATA_RACE error._
+**Description:** A `DATA_RACE` error occurs when two or more threads simultaneously access shared data, and at least one thread modifies the data. This can lead to unpredictable behavior and incorrect results.
+
+**Example:**
+
+```cpp
+#include <iostream>
+#include <thread>
+
+int sharedData = 0;
+
+void increment() {
+    for (int i = 0; i < 100000; ++i) {
+        ++sharedData; // DATA_RACE: Multiple threads modifying shared data
+    }
+}
+
+int main() {
+    std::thread t1(increment);
+    std::thread t2(increment);
+
+    t1.join();
+    t2.join();
+
+    std::cout << "Final value: " << sharedData << std::endl;
+    return 0;
+}
+```
+
+**Explanation:**
+
+-   Two threads (`t1` and `t2`) simultaneously increment `sharedData`.
+-   This concurrent modification causes a data race, leading to unpredictable results.
+
+**Fix:** Use synchronization mechanisms (e.g., mutexes) to protect shared data.
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+#include <thread>
+#include <mutex>
+
+int sharedData = 0;
+std::mutex mtx;
+
+void increment() {
+    for (int i = 0; i < 100000; ++i) {
+        std::lock_guard<std::mutex> lock(mtx); // Protect shared data with a mutex
+        ++sharedData;
+    }
+}
+
+int main() {
+    std::thread t1(increment);
+    std::thread t2(increment);
+
+    t1.join();
+    t2.join();
+
+    std::cout << "Final value: " << sharedData << std::endl;
+    return 0;
+}
+```
+
+**Explanation:**
+
+-   `std::lock_guard<std::mutex> lock(mtx);` ensures that only one thread can access the critical section at a time, preventing data races.
+<br>
 
 ### LOCK
 
-_Explanation and example of LOCK error._
+**Description:** A `LOCK` error occurs when improper use of locking mechanisms leads to deadlocks, livelocks, or other synchronization issues. These errors can cause the program to hang or become unresponsive.
+
+**Example:**
+
+```cpp
+#include <iostream>
+#include <thread>
+#include <mutex>
+
+std::mutex mtx1;
+std::mutex mtx2;
+
+void thread1() {
+    std::lock_guard<std::mutex> lock1(mtx1);
+    std::this_thread::sleep_for(std::chrono::milliseconds(50)); // Simulate work
+    std::lock_guard<std::mutex> lock2(mtx2); // LOCK: Potential for deadlock
+}
+
+void thread2() {
+    std::lock_guard<std::mutex> lock2(mtx2);
+    std::this_thread::sleep_for(std::chrono::milliseconds(50)); // Simulate work
+    std::lock_guard<std::mutex> lock1(mtx1); // LOCK: Potential for deadlock
+}
+
+int main() {
+    std::thread t1(thread1);
+    std::thread t2(thread2);
+
+    t1.join();
+    t2.join();
+
+    std::cout << "Both threads have finished." << std::endl;
+    return 0;
+}
+```
+
+**Explanation:**
+
+-   `thread1` locks `mtx1` and then tries to lock `mtx2`.
+-   `thread2` locks `mtx2` and then tries to lock `mtx1`.
+-   This leads to a potential deadlock where both threads wait indefinitely for the other to release the lock.
+
+**Fix:** Use a consistent lock ordering or higher-level synchronization primitives (e.g., `std::scoped_lock`).
+
+**Fixed Example:**
+
+```cpp
+#include <iostream>
+#include <thread>
+#include <mutex>
+
+std::mutex mtx1;
+std::mutex mtx2;
+
+void thread1() {
+    std::scoped_lock lock(mtx1, mtx2); // Lock both mutexes together in a consistent order
+    std::this_thread::sleep_for(std::chrono::milliseconds(50)); // Simulate work
+    // Critical section
+}
+
+void thread2() {
+    std::scoped_lock lock(mtx1, mtx2); // Lock both mutexes together in a consistent order
+    std::this_thread::sleep_for(std::chrono::milliseconds(50)); // Simulate work
+    // Critical section
+}
+
+int main() {
+    std::thread t1(thread1);
+    std::thread t2(thread2);
+
+    t1.join();
+    t2.join();
+
+    std::cout << "Both threads have finished." << std::endl;
+    return 0;
+}
+```
+
+**Explanation:**
+
+-   `std::scoped_lock lock(mtx1, mtx2);` locks both mutexes together in a consistent order, preventing deadlocks.
+<br>
+
+
+---
 
 ## Resource Management Errors
 
